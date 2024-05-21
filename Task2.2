@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply for Jobs</title>
+<script>
+function validateForm() {
+    var firstName = document.getElementById("first_name").value.trim();
+    var lastName = document.getElementById("last_name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var phone = document.getElementById("phone").value.trim();
+    var address = document.getElementById("address").value.trim();
+    var city = document.getElementById("city").value.trim();
+    var state = document.getElementById("state").value.trim();
+    var zip = document.getElementById("zip").value.trim();
+    var country = document.getElementById("country").value;
+    var eduLevel = document.getElementById("edu_level").value;
+    var eduType = document.getElementById("edu_type").value;
+    var resume = document.getElementById("resume").value.trim();
+    
+    // Check if required fields are not empty
+    if (firstName === "" || lastName === "" || email === "" || phone === "" || address === "" || city === "" || state === "" || zip === "" || country === "" || eduLevel === "" || eduType === "" || resume === "") {
+        alert("Please fill in all required fields.");
+        return false;
+    }
+
+    // Validate numeric fields
+    if (isNaN(zip) || (document.getElementById("employed").checked && isNaN(document.getElementById("years_of_exp").value.trim()))) {
+        alert("Please enter valid numeric values.");
+        return false;
+    }
+
+    // Validate email format
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return false;
+    }
+
+    // Validate phone number format
+    var phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return false;
+    }
+
+    return true;
+}
+</script>
+</head>
+<body>
+<form id="applyForm" action="submit_job_application.php" method="post" onsubmit="return validateForm()">
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" required><br><br>
+    
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" required><br><br>
+    
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+    
+    <label for="phone">Phone:</label>
+    <input type="tel" id="phone" name="phone" required><br><br>
+    
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required><br><br>
+    
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" required><br><br>
+    
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state" required><br><br>
+    
+    <label for="zip">Zip:</label>
+    <input type="number" id="zip" name="zip" required><br><br>
+    
+    <label for="country">Country:</label>
+    <select id="country" name="country" required>
+        <option value="">Select Country</option>
+        <option value="USA">USA</option>
+        <option value="Canada">Canada</option>
+        <!-- Add more countries as needed -->
+    </select><br><br>
+    
+    <label for="edu_level">Education Level:</label>
+    <select id="edu_level" name="edu_level" required>
+        <option value="">Select Education Level</option>
+        <option value="High School">High School</option>
+        <option value="Bachelor's">Bachelor's</option>
+        <option value="Master's">Master's</option>
+        <!-- Add more education levels as needed -->
+    </select><br><br>
+    
+    <label for="edu_type">Education Type:</label>
+    <select id="edu_type" name="edu_type" required>
+        <option value="">Select Education Type</option>
+        <option value="Full-Time">Full-Time</option>
+        <option value="Part-Time">Part-Time</option>
+        <!-- Add more education types as needed -->
+    </select><br><br>
+    
+    <label for="resume">Resume:</label>
+    <input type="file" id="resume" name="resume" required><br><br>
+    
+    <label for="cover_letter">Cover Letter:</label><br>
+    <textarea id="cover_letter" name="cover_letter"></textarea><br><br>
+    
+    <label for="employed">Are you employed?</label>
+    <input type="checkbox" id="employed" name="employed"><br><br>
+    
+    <div id="employmentDetails" style="display:none;">
+        <label for="current_employer">Current Employer:</label>
+        <input type="text" id="current_employer" name="current_employer"><br><br>
+        
+        <label for="years_of_exp">Years of Experience:</label>
+        <input type="number" id="years_of_exp" name="years_of_exp"><br><br>
+    </div>
+    
+    <label for="jobs">Jobs you want to apply:</label>
+    <select id="jobs" name="jobs[]" multiple>
+        <option value="job1">Job 1</option>
+        <option value="job2">Job 2</option>
+        <option value="job3">Job 3</option>
+        <!-- Add more job options as needed -->
+    </select><br><br>
+    
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
