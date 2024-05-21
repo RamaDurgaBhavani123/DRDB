@@ -1,0 +1,158 @@
+-- Create sequence for job_id
+CREATE SEQUENCE job_id_seq START WITH 1 INCREMENT BY 1;
+
+-- Create region table
+
+CREATE TABLE region (
+    region_id VARCHAR(2) PRIMARY KEY,
+    region_name VARCHAR(50)
+);
+
+
+SE
+-- Insert sample data into region table
+INSERT INTO region (region_id, region_name) VALUES
+('EU', 'Europe'),
+('NA', 'North America');
+
+-- Create countries table
+CREATE TABLE countries (
+    country_cd VARCHAR(2) PRIMARY KEY,
+    country_name VARCHAR(50),
+    region_id VARCHAR(2) REFERENCES region(region_id)
+);
+
+-- Insert sample data into countries table
+INSERT INTO countries (country_cd, country_name, region_id) VALUES
+('US', 'United States', 'NA'),
+('CA', 'Canada', 'NA'),
+('FR', 'France', 'EU'),
+('UK', 'United Kingdom', 'EU');
+
+-- Create Departments table
+CREATE TABLE departments (
+    dept_id SERIAL PRIMARY KEY,
+    dept_name VARCHAR(100)
+);
+
+-- Insert sample data into Departments table
+INSERT INTO departments (dept_name) VALUES
+('IT'),
+('HR'),
+('Sales');
+
+-- Create job_types table
+CREATE TABLE job_types (
+    job_type_cd SERIAL PRIMARY KEY,
+    job_type_name VARCHAR(100)
+);
+
+-- Insert sample data into job_types table
+INSERT INTO job_types (job_type_name) VALUES
+('IT Manager'),
+('HR Manager'),
+('Developer'),
+('HR Assistant'),
+('Sales Manager');
+
+-- Create job_status_codes table
+CREATE TABLE job_status_codes (
+    job_status_cd SERIAL PRIMARY KEY,
+    status_desc VARCHAR(100)
+);
+
+-- Insert sample data into job_status_codes table
+INSERT INTO job_status_codes (status_desc) VALUES
+('Open'),
+('Closed'),
+('Pending');
+
+-- Create appl_status_codes table
+CREATE TABLE appl_status_codes (
+    appl_status_cd SERIAL PRIMARY KEY,
+    status_desc VARCHAR(100)
+);
+
+-- Insert sample data into appl_status_codes table
+INSERT INTO appl_status_codes (status_desc) VALUES
+('Pending'),
+('Rejected'),
+('Passed Written Test'),
+('Passed Interview 1'),
+('Shortlisted'),
+('Selected');
+
+-- Create education_levels table
+CREATE TABLE education_levels (
+    edu_level_cd SERIAL PRIMARY KEY,
+    edu_level_name VARCHAR(100)
+);
+
+-- Insert sample data into education_levels table
+INSERT INTO education_levels (edu_level_name) VALUES
+('High School'),
+('Graduate'),
+('Post Graduate'),
+('Doctorate/PhD');
+
+-- Create education_type table
+CREATE TABLE education_type (
+    edu_type_cd SERIAL PRIMARY KEY,
+    edu_type_name VARCHAR(100)
+);
+
+-- Insert sample data into education_type table
+INSERT INTO education_type (edu_type_name) VALUES
+('Civil Engineering'),
+('Computer Engineering'),
+('Business Administration'),
+('Economics'),
+('General');
+
+-- Create jobs table
+CREATE TABLE jobs (
+    job_id SERIAL PRIMARY KEY,
+    job_title VARCHAR(100),
+    job_desc VARCHAR(4000),
+    job_type_cd INT REFERENCES job_types(job_type_cd),
+    dept_id INT REFERENCES departments(dept_id),
+    job_status_cd INT REFERENCES job_status_codes(job_status_cd),
+    country_cd VARCHAR(2) REFERENCES countries(country_cd),
+    date_opened DATE,
+    date_closed DATE
+);
+
+-- Create applicants table
+CREATE TABLE applicants (
+    appl_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(100),
+    phone_num VARCHAR(20),
+    address VARCHAR(255),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    zip VARCHAR(10),
+    country_cd VARCHAR(2) REFERENCES countries(country_cd),
+    appl_status_cd INT REFERENCES appl_status_codes(appl_status_cd),
+    edu_level_cd INT REFERENCES education_levels(edu_level_cd),
+    edu_type_cd INT REFERENCES education_type(edu_type_cd),
+    resume_file_name VARCHAR(255),
+    cover_letter_text TEXT,
+    date_applied DATE,
+    employed_flag BOOLEAN,
+    current_employer_name VARCHAR(100),
+    years_of_exp INT
+);
+
+-- Create applicants_jobs table
+CREATE TABLE applicants_jobs (
+    appl_id INT REFERENCES applicants(appl_id),
+    job_id INT REFERENCES jobs(job_id),
+    appl_status_cd INT REFERENCES appl_status_codes(appl_status_cd),
+    date_applied DATE,
+    written_test_date DATE,
+    interview_date DATE,
+    interview2_date DATE,
+    PRIMARY KEY (appl_id, job_id)
+);
