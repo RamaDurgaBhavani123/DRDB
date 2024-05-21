@@ -1,0 +1,86 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply for Jobs</title>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<script>
+function toggleEmploymentDetails() {
+    var employedCheckbox = document.getElementById("employed");
+    var employmentDetails = document.getElementById("employmentDetails");
+    if (employedCheckbox.checked) {
+        employmentDetails.style.display = "block";
+    } else {
+        employmentDetails.style.display = "none";
+    }
+}
+
+function validateForm() {
+    var firstName = document.getElementById("first_name").value.trim();
+    var lastName = document.getElementById("last_name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var phone = document.getElementById("phone").value.trim();
+    var address = document.getElementById("address").value.trim();
+    var city = document.getElementById("city").value.trim();
+    var state = document.getElementById("state").value.trim();
+    var zip = document.getElementById("zip").value.trim();
+    var country = document.getElementById("country").value;
+    var eduLevel = document.getElementById("edu_level").value;
+    var eduType = document.getElementById("edu_type").value;
+    var resume = document.getElementById("resume").value.trim();
+
+    // Check if required fields are not empty
+    if (firstName === "" || lastName === "" || email === "" || phone === "" || address === "" || city === "" || state === "" || zip === "" || country === "" || eduLevel === "" || eduType === "" || resume === "") {
+        alert("Please fill in all required fields.");
+        return false;
+    }
+
+    // Validate numeric fields
+    if (isNaN(zip) || (document.getElementById("employed").checked && isNaN(document.getElementById("years_of_exp").value.trim()))) {
+        alert("Please enter valid numeric values.");
+        return false;
+    }
+
+    // Validate email format
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return false;
+    }
+
+    // Validate phone number format
+    var phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return false;
+    }
+
+    return true;
+}
+</script>
+</head>
+<body>
+<h1 class="header">Apply for Jobs</h1>
+<form id="applyForm" action="submit_job_application.jsp" method="post" onsubmit="return validateForm()">
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" required><br><br>
+    
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" required><br><br>
+    
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+    
+    <label for="phone">Phone:</label>
+    <input type="tel" id="phone" name="phone" required><br><br>
+    
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required><br><br>
+    
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" required><br><br>
+    
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state" required><br>
