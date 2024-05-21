@@ -1,0 +1,75 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enter Job Data</title>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<script>
+function validateForm() {
+    var title = document.getElementById("title").value.trim();
+    var type = document.getElementById("type").value;
+    var department = document.getElementById("department").value;
+    var country = document.getElementById("country").value;
+    var description = document.getElementById("description").value.trim();
+    var openingDate = document.getElementById("opening_date").value;
+
+    // Check if required fields are not empty
+    if (title === "" || type === "" || department === "" || country === "" || description === "" || openingDate === "") {
+        alert("Please fill in all required fields.");
+        return false;
+    }
+
+    // Validate date format
+    var currentDate = new Date();
+    var selectedDate = new Date(openingDate);
+    if (selectedDate > currentDate) {
+        alert("Opening date cannot be greater than the current date.");
+        return false;
+    }
+
+    return true;
+}
+</script>
+</head>
+<body>
+<h1 class="header">Enter Job Data</h1>
+<form id="jobForm" action="submit_job_data.jsp" method="post" onsubmit="return validateForm()">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required><br><br>
+    
+    <label for="type">Type:</label>
+    <select id="type" name="type" required>
+        <option value="">Select Type</option>
+        <option value="Full-Time">Full-Time</option>
+        <option value="Part-Time">Part-Time</option>
+        <!-- Add more type options as needed -->
+    </select><br><br>
+    
+    <label for="department">Department:</label>
+    <select id="department" name="department" required>
+        <option value="">Select Department</option>
+        <option value="HR">HR</option>
+        <option value="IT">IT</option>
+        <!-- Add more department options as needed -->
+    </select><br><br>
+    
+    <label for="country">Country:</label>
+    <select id="country" name="country" required>
+        <option value="">Select Country</option>
+        <option value="USA">USA</option>
+        <option value="Canada">Canada</option>
+        <!-- Add more country options as needed -->
+    </select><br><br>
+    
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" required></textarea><br><br>
+    
+    <label for="opening_date">Opening Date:</label>
+    <input type="date" id="opening_date" name="opening_date" value="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" required><br><br>
+    
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
